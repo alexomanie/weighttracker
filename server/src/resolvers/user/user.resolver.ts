@@ -50,8 +50,8 @@ export class UserResolver {
     );
   }
 
-  @ResolveField('posts')
-  posts(@Parent() author: User) {
-    return this.prisma.user.findUnique({ where: { id: author.id } }).posts();
+  @ResolveField('entries')
+  entries(@Parent() user: User) {
+    return this.prisma.user.findUnique({ where: { id: user.id } }).entries();
   }
 }

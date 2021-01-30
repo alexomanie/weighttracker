@@ -24,6 +24,12 @@ input LoginInput {
   password: String!
 }
 
+"""Mood of the day"""
+enum Mood {
+  BAD
+  GOOD
+}
+
 type Mutation {
   changePassword(data: ChangePasswordInput!): User!
   login(data: LoginInput!): Auth!
@@ -47,59 +53,13 @@ type PageInfo {
   startCursor: String
 }
 
-type Post {
-  author: User!
-  content: String!
-
-  """Identifies the date and time when the object was created."""
-  createdAt: Date!
-  id: ID!
-  published: Boolean!
-  title: String!
-
-  """Identifies the date and time when the object was last updated."""
-  updatedAt: Date!
-}
-
-type PostConnection {
-  edges: [PostEdge!]
-  pageInfo: PageInfo!
-  totalCount: Int!
-}
-
-type PostEdge {
-  cursor: String!
-  node: Post!
-}
-
-input PostOrder {
-  direction: OrderDirection!
-  field: PostOrderField!
-}
-
-"""Properties by which post connections can be ordered."""
-enum PostOrderField {
-  content
-  createdAt
-  id
-  published
-  title
-  updatedAt
-}
-
 type Query {
   hello(name: String!): String!
   helloWorld: String!
   me: User!
-  post(postId: String!): Post!
-  publishedPosts(after: String, before: String, first: Int, last: Int, orderBy: PostOrder, query: String, skip: Int): PostConnection!
-  userPosts(userId: String!): [Post!]!
-}
-
-"""User role"""
-enum Role {
-  ADMIN
-  USER
+  userWeightEntries(userId: String!): [WeightEntry!]!
+  weightEntries(after: String, before: String, first: Float, last: Float, orderBy: WeightEntryOrder, skip: Float): WeightEntryConnection!
+  weightEntry(weightentryId: String!): WeightEntry!
 }
 
 input SignupInput {
@@ -126,12 +86,48 @@ type User {
   """Identifies the date and time when the object was created."""
   createdAt: Date!
   email: String!
+  entries: [WeightEntry!]!
   firstname: String
   id: ID!
   lastname: String
-  posts: [Post!]!
-  role: Role!
 
   """Identifies the date and time when the object was last updated."""
   updatedAt: Date!
+}
+
+type WeightEntry {
+  """Identifies the date and time when the object was created."""
+  createdAt: Date!
+  day: Float!
+  id: ID!
+  mood: Mood!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: Date!
+  user: User!
+  weight: Float!
+}
+
+type WeightEntryConnection {
+  edges: [WeightEntryEdge!]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type WeightEntryEdge {
+  cursor: String!
+  node: WeightEntry!
+}
+
+input WeightEntryOrder {
+  direction: OrderDirection!
+  field: WeightEntryOrderField!
+}
+
+"""Properties by which weight connections can be ordered."""
+enum WeightEntryOrderField {
+  createdAt
+  id
+  mood
+  updatedAt
 }

@@ -10,24 +10,23 @@ Table User {
   password String [not null]
   firstname String
   lastname String
-  posts Post
-  role Role [not null]
+  entries WeightEntry
 }
 
-Table Post {
+Table WeightEntry {
   id String [pk]
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
-  published Boolean [not null]
-  title String [not null]
-  content String
-  author User
-  authorId String
+  day Int [not null]
+  weight Float [not null]
+  mood Mood
+  user User
+  userId String
 }
 
-Enum Role {
-  ADMIN
-  USER
+Enum Mood {
+  GOOD
+  BAD
 }
 
-Ref: Post.authorId > User.id
+Ref: WeightEntry.userId > User.id

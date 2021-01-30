@@ -1,8 +1,9 @@
 {
-  "name": "nestjs-prisma-client-starter",
+  "name": "weightracker-backend",
   "version": "0.0.1",
-  "description": "NestJS Prisma Client Starter Project",
-  "author": "Marc Stammerjohann",
+  "private": true,
+  "description": "Based on NestJS Prisma Client Starter Project",
+  "author": "Alexander Horn",
   "license": "MIT",
   "keywords": [
     "NestJS",
@@ -10,13 +11,6 @@
     "Prisma Client",
     "Typescript"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/fivethree-team/nestjs-prisma-client-example.git"
-  },
-  "bugs": {
-    "url": "https://github.com/fivethree-team/nestjs-prisma-client-example/issues"
-  },
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",

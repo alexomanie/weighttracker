@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "blog"."Role" AS ENUM ('ADMIN', 'USER');
+CREATE TYPE "Mood" AS ENUM ('GOOD', 'BAD');
 
 -- CreateTable
 CREATE TABLE "User" (
@@ -10,20 +10,19 @@ CREATE TABLE "User" (
     "password" TEXT NOT NULL,
     "firstname" TEXT,
     "lastname" TEXT,
-    "role" "Role" NOT NULL,
 
     PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Post" (
+CREATE TABLE "WeightEntry" (
     "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "published" BOOLEAN NOT NULL,
-    "title" TEXT NOT NULL,
-    "content" TEXT,
-    "authorId" TEXT,
+    "day" INTEGER NOT NULL,
+    "weight" DECIMAL(65,30) NOT NULL,
+    "mood" "Mood",
+    "userId" TEXT,
 
     PRIMARY KEY ("id")
 );
@@ -32,4 +31,4 @@ CREATE TABLE "Post" (
 CREATE UNIQUE INDEX "User.email_unique" ON "User"("email");
 
 -- AddForeignKey
-ALTER TABLE "Post" ADD FOREIGN KEY("authorId")REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "WeightEntry" ADD FOREIGN KEY("userId")REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
