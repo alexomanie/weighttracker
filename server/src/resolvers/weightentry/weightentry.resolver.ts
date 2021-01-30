@@ -2,17 +2,31 @@ import { PrismaService } from '../../services/prisma.service';
 import { PaginationArgs } from '../../common/pagination/pagination.args';
 import { WeightEntryIdArgs } from '../../models/args/weightentry-id.args';
 import { UserIdArgs } from '../../models/args/user-id.args';
-import { Resolver, Query, Parent, Args, ResolveField } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Parent,
+  Args,
+  ResolveField,
+  Mutation,
+} from '@nestjs/graphql';
 import { WeightEntry } from '../../models/weightentry.model';
 import { WeightEntryOrder } from '../../models/inputs/weightentry-order.input';
 import { WeightEntryConnection } from '../../models/pagination/weightentry-connection.model';
 import { findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../../guards/gql-auth.guard';
+import { AddWeightEntryInput } from './dto/add-weightentry.input';
+import { User } from '@prisma/client';
+import { UserEntity } from 'src/decorators/user.decorator';
+import { WeightEntryService } from 'src/services/weightentry.service';
 
 @Resolver((of) => WeightEntry)
 export class WeightEntryResolver {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private weightEntryService: WeightEntryService
+  ) {}
 
   @UseGuards(GqlAuthGuard)
   @Query((returns) => WeightEntryConnection)
@@ -36,6 +50,15 @@ export class WeightEntryResolver {
       { first, last, before, after }
     );
     return a;
+  }
+
+  @UseGuards(GqlAuthGuard)
+  @Mutation((returns) => WeightEntry)
+  addWeightEntry(
+    @UserEntity() user: User,
+    @Args('data') entry: AddWeightEntryInput
+  ) {
+    return this.weightEntryService.addWeightEntry(user, entry);
   }
 
   @Query((returns) => [WeightEntry])

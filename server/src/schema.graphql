@@ -2,6 +2,12 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input AddWeightEntryInput {
+  day: Float!
+  mood: String
+  weight: Float!
+}
+
 type Auth {
   """JWT access token"""
   accessToken: String!
@@ -31,6 +37,7 @@ enum Mood {
 }
 
 type Mutation {
+  addWeightEntry(data: AddWeightEntryInput!): WeightEntry!
   changePassword(data: ChangePasswordInput!): User!
   login(data: LoginInput!): Auth!
   refreshToken(token: String!): Token!
